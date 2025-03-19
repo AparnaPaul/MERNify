@@ -1,28 +1,5 @@
 import mongoose from "mongoose";
 
-const addressSchema = new mongoose.Schema({
-    street: {
-        type: String,
-        required: true
-    },
-    city: {
-        type: String,
-        required: true
-    },
-    state: {
-        type: String,
-        required: true
-    },
-    zipcode: {
-        type: String,
-        required: true
-    },
-    country: {
-        type: String,
-        required: true
-    },
-})
-
 const userSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -39,7 +16,8 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     address: {
-        type: addressSchema,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "addressModel"
 
     },
     mobile: {

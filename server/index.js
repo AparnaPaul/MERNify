@@ -29,7 +29,7 @@ import adminRoutes from './routes/adminRoute.js';
 import cartRoutes from './routes/cartRoute.js';
 import orderRoutes from './routes/orderRoute.js';
 import reviewRoutes from './routes/reviewRoute.js';
-
+import addressRoutes from './routes/addressRoute.js'
 
 
 
@@ -38,6 +38,7 @@ app.use("/api", userRoutes)
 app.use("/api", productRoutes)
 app.use("/api", adminRoutes)
 app.use("/api", cartRoutes)
+app.use("/api", addressRoutes )
 app.use("/api", orderRoutes)
 app.use("/api", reviewRoutes)
 

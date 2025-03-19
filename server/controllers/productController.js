@@ -93,7 +93,21 @@ export const getAllProducts = tryCatch(async (req, res) => {
 })
 
 export const getSingleProduct = tryCatch(async (req, res) => {
-    const product = await Product.findById(req.params.id)
+    const { id } = req.params;
+
+    // Log the product ID
+    console.log("Product ID:", id);
+
+    // Find the product in the database
+    const product = await Product.findById(id);
+    console.log("Product Details:", product);
+    if (!product) {
+        return res.status(404).json({
+            message: "Product not found",
+        });
+    }
+
+    // const product = await Product.findById(req.params.id)
 
     const relatedProduct = await Product.find({
         category: product.category,

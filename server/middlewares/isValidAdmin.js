@@ -27,7 +27,7 @@ export const isValidAdmin = async (req, res, next) => {
     }
 
    
-    req.admin = admin;
+    req.user = admin;
 
    
     next();

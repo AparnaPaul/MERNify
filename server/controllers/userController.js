@@ -37,20 +37,42 @@ export const loginUser = tryCatch(async (req, res) => {
 
 export const signupUser = tryCatch(async (req, res) => {
     const { username, email, password, mobile } = req.body;
-    const user = await User.findOne({ email })
-    if (user) {
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
         return res.status(409).json({
-            message: "User already exist, you can login"
-        })
+            message: "User already exists, you can login",
+            success: false
+        });
     }
-    const userModel = new User({ username, email, password, mobile });
-    userModel.password = await bcrypt.hash(password, 10);
-    await userModel.save();
+
+    
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+   
+    const user = new User({
+        username,
+        email,
+        password: hashedPassword,
+        mobile
+    });
+
+    await user.save();
+
+    const jwtToken = jwt.sign(
+        { email: user.email, _id: user._id },
+        process.env.JWT_SECRET,
+        { expiresIn: "24h" }
+    );
+
     res.status(201).json({
         message: "Signup success",
-        success: true
-    })
-})
+        success: true,
+        jwtToken,
+        email,
+        username: user.username
+    });
+});
 
 export const myProfile = tryCatch(async (req, res) => {
     const user = await User.findById(req.user._id);

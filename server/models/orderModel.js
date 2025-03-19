@@ -10,7 +10,7 @@ const orderSchema = new mongoose.Schema(
         },
         product: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
+          ref: "productModel",
           required: true,
         },
       },
@@ -27,12 +27,12 @@ const orderSchema = new mongoose.Schema(
 
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "userModel",
       required: true,
     },
 
     phone: {
-      type: Number,
+      type: String,
       required: true,
     },
 

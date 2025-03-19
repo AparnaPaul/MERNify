@@ -5,7 +5,7 @@ import { createAdmin, loginAdmin, logoutAdmin, myProfile } from "../controllers/
 
 const router = express.Router();
 
-router.post('/admin/login', loginValidation, isValidAdmin, loginAdmin)
+router.post('/admin/login', loginValidation, loginAdmin)
 router.post('/admin/signup', signupValidation, createAdmin)
 router.get('/admin/me', isValidAdmin, myProfile)
 router.get('/admin/logout', logoutAdmin)

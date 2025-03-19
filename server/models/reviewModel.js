@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const reviewSchema = new mongoose.Schema({
-    createdBy: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "userModel",
         required: true
@@ -21,6 +21,10 @@ const reviewSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    reviewDate: {
+        type: Date,
+        default: Date.now
+    }
 },
     {
         timestamps: true
