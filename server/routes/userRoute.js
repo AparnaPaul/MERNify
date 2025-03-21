@@ -1,5 +1,5 @@
 import express from "express";
-import { loginUser, logoutUser, myProfile, signupUser } from "../controllers/userController.js";
+import { deactivateAccount, loginUser, logoutUser, myProfile, signupUser, updateProfile } from "../controllers/userController.js";
 import { loginValidation, signupValidation } from "../middlewares/authValidation.js";
 import { isValidUser } from "../middlewares/isValidUser.js";
 
@@ -9,6 +9,9 @@ router.post('/user/login', loginValidation, loginUser)
 router.post('/user/signup', signupValidation, signupUser)
 router.get('/user/me', isValidUser, myProfile)
 router.post('/user/logout', logoutUser)
+router.put('/user/updateProfile', isValidUser, updateProfile)
+router.post('/user/deactivate/:id', isValidUser, deactivateAccount)
+
 
 
 

@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import connectDb from './utils/db.js';
 import cloudinary from 'cloudinary';
 import cors from 'cors';
+import cookieParser from "cookie-parser"
 
 
 dotenv.config();
@@ -17,7 +18,7 @@ const app = express();
 
 app.use(cors())
 
-
+app.use(cookieParser())
 app.use(express.json())
 
 const port = process.env.PORT || 3000

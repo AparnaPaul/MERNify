@@ -36,12 +36,17 @@ export const createAdmin = tryCatch(async (req, res) => {
         { expiresIn: "24h" }
     );
 
+    // Store token in cookie
+    res.cookie('token', jwtToken, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+
+    // Remove password from the response
+    const adminResponse = { ...admin._doc };
+    delete adminResponse.password;
+
     res.status(201).json({
         message: "Admin created successfully",
         success: true,
-        jwtToken,
-        email,
-        username: admin.username
+        admin: adminResponse
     });
 });
 
@@ -75,24 +80,59 @@ export const loginAdmin = tryCatch(async (req, res) => {
         { expiresIn: "24h" }
     );
 
+    // Store token in cookie
+    res.cookie('token', jwtToken, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+
+    // Remove password from the response
+    const adminResponse = { ...admin._doc };
+    delete adminResponse.password;
+
     res.status(200).json({
         message: "Login successful",
         success: true,
-        jwtToken,
-        email,
-        username: admin.username
+        admin: adminResponse
     });
 });
 
 export const myProfile = tryCatch(async (req, res) => {
     const admin = await Admin.findById(req.admin._id);
 
-    res.json(admin);
+    // Remove password from the response
+    const adminResponse = { ...admin._doc };
+    delete adminResponse.password;
+
+    res.json(adminResponse);
 });
 
 export const logoutAdmin = tryCatch(async (req, res) => {
+    res.clearCookie('token');
     res.status(200).json({
         message: "Admin logged out successfully",
         success: true
-    })
-})
+    });
+});
+
+export const updateAdminProfile = tryCatch(async (req, res) => {
+    const { username, mobile } = req.body;
+    const admin = await Admin.findByIdAndUpdate(req.admin._id, { username, mobile }, { new: true });
+
+    // Remove password from the response
+    const adminResponse = { ...admin._doc };
+    delete adminResponse.password;
+
+    res.status(200).json({
+        message: "Admin profile updated successfully",
+        success: true,
+        admin: adminResponse
+    });
+});
+
+
+export const deactivateAdminAccount = tryCatch(async (req, res) => {
+    await Admin.findByIdAndDelete(req.admin._id);
+    res.clearCookie('token');
+    res.status(200).json({
+        message: "Admin account deactivated successfully",
+        success: true
+    });
+});
