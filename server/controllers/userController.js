@@ -72,7 +72,10 @@ export const signupUser = tryCatch(async (req, res) => {
     );
 
     // Store token in cookie
-    res.cookie('token', jwtToken, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+    res.cookie('token', jwtToken, { httpOnly: false,
+        secure: process.env.NODE_ENV === "production" ? true : false, 
+        sameSite: "Lax",
+        maxAge: 24 * 60 * 60 * 1000 });
 
     // Remove password from the response
     const userResponse = { ...user._doc };
