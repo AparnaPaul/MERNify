@@ -17,14 +17,6 @@ export const isValidAdmin = async (req, res, next) => {
     // Decode the token
     const decodedData = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Check if decoded data is valid
-    if (!decodedData) {
-      return res.status(401).json({
-        message: "Invalid token. Please log in again.",
-        success: false,
-      });
-    }
-
     // Find the admin by ID from the decoded token
     const admin = await Admin.findById(decodedData._id);
 
@@ -37,7 +29,8 @@ export const isValidAdmin = async (req, res, next) => {
     }
 
     // Attach the admin object to the request
-    req.admin = admin;
+    req.admin = { ...admin._doc, role: "admin" }; // Ensure role is attached
+
 
     // Proceed to the next middleware or route handler
     next();

@@ -17,14 +17,6 @@ export const isValidUser = async (req, res, next) => {
     // Decode the token
     const decodedData = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Check if decoded data is valid
-    if (!decodedData) {
-      return res.status(401).json({
-        message: "Invalid token. Please log in again.",
-        success: false,
-      });
-    }
-
     // Find the user by ID from the decoded token
     const user = await User.findById(decodedData._id);
 

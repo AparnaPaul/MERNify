@@ -26,7 +26,9 @@ export const loginUser = tryCatch(async (req, res) => {
         { expiresIn: '24h' }
     )
     // Store token in cookie
-    res.cookie('token', jwtToken, { httpOnly: true, secure: process.env.NODE_ENV === 'production' });
+    res.cookie('token', jwtToken, { httpOnly: false, // Temporarily allow JavaScript access for debugging
+        secure: true,  
+        sameSite: "None" });
 
     // Remove password from the response
     const userResponse = { ...user._doc };

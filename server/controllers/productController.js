@@ -5,14 +5,17 @@ import cloudinary from 'cloudinary';
 
 
 export const createProduct = tryCatch(async (req, res) => {
-    if (req.user.role !== "admin") {
-        return res.status(403).json({
-            message: "You are not admin"
-        });
+    console.log("Request Body:", req.body);  // Add this line for debugging
+    if (!req.admin || req.admin.role !== "admin") {
+        return res.status(403).json({ message: "You are not admin" });
     }
 
     const { title, description, category, price, stock } = req.body
-
+    if (!title || !description || !category || !price || !stock) {
+        return res.status(400).json({
+            message: "Title, description, category, price, and stock are required",
+        });
+    }
     const files = req.files
 
     if (!files || files.length === 0) {
@@ -118,11 +121,10 @@ export const getSingleProduct = tryCatch(async (req, res) => {
 })
 
 export const updateProduct = tryCatch(async (req, res) => {
-    if (req.user.role !== "admin") {
-        return res.status(403).json({
-            message: "You are not admin"
-        });
+    if (!req.admin || req.admin.role !== "admin") {
+        return res.status(403).json({ message: "You are not admin" });
     }
+
     const { title, description, category, price, stock } = req.body
 
     const updateFields = {}
@@ -153,10 +155,8 @@ export const updateProduct = tryCatch(async (req, res) => {
 })
 
 export const updateProductImage = tryCatch(async (req, res) => {
-    if (req.user.role !== "admin") {
-        return res.status(403).json({
-            message: "You are not admin"
-        });
+    if (!req.admin || req.admin.role !== "admin") {
+        return res.status(403).json({ message: "You are not admin" });
     }
 
     const { id } = req.params

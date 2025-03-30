@@ -1,8 +1,8 @@
 import express from "express";
+import { isValidAdmin } from "../middlewares/isValidAdmin.js";
 import { createProduct, getAllProducts, getSingleProduct, updateProduct, updateProductImage } from "../controllers/productController.js";
 import uploadFiles from "../middlewares/multer.js";
-import { isValidUser } from "../middlewares/isValidUser.js";
-import { isValidAdmin } from "../middlewares/isValidAdmin.js";
+
 
 const router = express.Router();
 
