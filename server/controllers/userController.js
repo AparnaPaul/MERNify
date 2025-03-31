@@ -26,9 +26,10 @@ export const loginUser = tryCatch(async (req, res) => {
         { expiresIn: '24h' }
     )
     // Store token in cookie
-    res.cookie('token', jwtToken, { httpOnly: false, // Temporarily allow JavaScript access for debugging
-        secure: true,  
-        sameSite: "None" });
+    res.cookie('token', jwtToken, { sameSite: "None",
+        secure: false,
+        httpOnly: false, path: "/",
+    });
 
     // Remove password from the response
     const userResponse = { ...user._doc };
@@ -72,10 +73,10 @@ export const signupUser = tryCatch(async (req, res) => {
     );
 
     // Store token in cookie
-    res.cookie('token', jwtToken, { httpOnly: false,
-        secure: process.env.NODE_ENV === "production" ? true : false, 
-        sameSite: "Lax",
-        maxAge: 24 * 60 * 60 * 1000 });
+    res.cookie('token', jwtToken, { sameSite: "None",
+        secure: false,
+        httpOnly: false, path: "/",
+    });
 
     // Remove password from the response
     const userResponse = { ...user._doc };
